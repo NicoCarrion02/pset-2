@@ -1,36 +1,59 @@
 blocks:
 - all_upstream_blocks_executed: true
   color: null
-  configuration: {}
+  configuration:
+    file_path: data_loaders/extract_data.py
+    file_source:
+      path: data_loaders/extract_data.py
   downstream_blocks:
-  - transform_load_data
+  - transform_data
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: extract_sources
+  name: extract_data
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: data_loader
   upstream_blocks: []
-  uuid: extract_sources
-- all_upstream_blocks_executed: true
+  uuid: extract_data
+- all_upstream_blocks_executed: false
   color: null
   configuration: {}
+  downstream_blocks:
+  - load_data
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: transform_data
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - extract_data
+  uuid: transform_data
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    file_path: data_exporters/load_data.py
+    file_source:
+      path: data_exporters/load_data.py
   downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: transform_load_data
+  name: load_data
   retry_config: null
-  status: failed
+  status: updated
   timeout: null
   type: data_exporter
   upstream_blocks:
-  - extract_sources
-  uuid: transform_load_data
+  - transform_data
+  uuid: load_data
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}

@@ -1,0 +1,1 @@
+2026-04-01T03:41:12 {"block_run_id": 42, "block_uuid": "extract_sources", "pipeline_run_id": 16, "pipeline_schedule_id": 2, "pipeline_uuid": "ny_taxi_etl", "hostname": "8583679df2ff", "block_type": "data_loader", "level": "INFO", "message": "Start executing block with BlockExecutor.", "timestamp": 1775014872.74969, "uuid": "5eacc32733d240c4b209d5d48a906be1"}
