@@ -20,7 +20,7 @@ Componentes principales:
 * pgAdmin: exploración y validación
 * Docker Compose: despliegue de servicios
 
-![Diagrama de arquitectura](docs/esquema_ny_taxi_con_fondo.drawio.svg)
+![Diagrama de arquitectura](docs/esquema_ny_taxi_con_fondo_claro.drawio.svg)
 
 
 ## Pasos para levantar el entorno
