@@ -85,7 +85,7 @@ ORDER BY 1,2;
 ```sql
 SELECT COUNT(*) FROM clean.fact_taxi_trip;
 ```
-<!-- ![](docs/sql3.png) -->
+![](docs/sql3.png)
 
 ```sql
 SELECT * FROM clean.dim_vendor;
