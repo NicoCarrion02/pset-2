@@ -130,20 +130,20 @@ Relaciones basadas en los identificadores presentes en la tabla de hechos.
 
 ## Evidencia visual
 
-Servicios corriendo en Docker:
+#### Servicios corriendo en Docker:
 ![imagen de servicios corriendo en Docker](docs/evidencia1.png)
 
-Pipelines en Mage:
+#### Pipelines en Mage:
 ![imagen de pipelines visibles en Mage](docs/evidencia2.png)
 
-Backfills configurados:
+#### Backfills configurados:
 ![imagen de triggers configurados](docs/evidencia3.png)
 
-Tablas en schema raw:
+#### Tablas en schema raw:
 ![imagen de tablas en raw](docs/evidencia4.png)
 
-Tablas en schema clean:
+#### Tablas en schema clean:
 ![imagen de tablas en clean](docs/evidencia5.png)
 
-Consultas en pgAdmin:
+#### Consultas en pgAdmin:
 ![imagen de consultas en pgAdmin mostrando resultados](docs/sql1.png)
