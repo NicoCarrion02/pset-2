@@ -9,7 +9,7 @@ if 'data_exporter' not in globals():
 
 @data_exporter
 def export_dimensions_to_postgres(output: dict, **kwargs) -> None:
-    dims = output['dimensions']  # Solo tomamos las dimensiones
+    dims = {k: v for k, v in output.items() if k != 'facts'}  # Solo tomamos las dimensiones
     schema_name = 'clean'
     config_path = path.join(get_repo_path(), 'io_config.yaml')
     config_profile = 'default'

@@ -42,21 +42,6 @@ def transform(data, *args, **kwargs) -> Dict[str, pd.DataFrame]:
     df = data['raw']
     existing_dims = data.get('dimensions', {})
 
-    # Tipado
-    for col in ['tpep_pickup_datetime', 'tpep_dropoff_datetime']:
-        if col in df.columns:
-            df[col] = pd.to_datetime(df[col], errors='coerce')
-
-    numeric_cols = [
-        'vendor_id', 'rate_code_id', 'pu_location_id', 'do_location_id',
-        'payment_type', 'passenger_count', 'trip_distance', 'fare_amount',
-        'extra', 'mta_tax', 'tip_amount', 'tolls_amount',
-        'improvement_surcharge', 'congestion_surcharge', 'airport_fee', 'total_amount'
-    ]
-    for col in numeric_cols:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors='coerce')
-
     df = df.drop_duplicates()
 
     df.rename(columns={'payment_type': 'payment_type_id'}, inplace=True)
@@ -64,6 +49,11 @@ def transform(data, *args, **kwargs) -> Dict[str, pd.DataFrame]:
     df['vendor_id'] = df['vendor_id'].fillna(-1).astype('Int64')
     df['payment_type_id'] = df['payment_type_id'].fillna(5).astype('Int64')
     df['rate_code_id'] = df['rate_code_id'].fillna(99).astype('Int64')
+
+    datetime_cols = ['tpep_pickup_datetime', 'tpep_dropoff_datetime']
+
+    for col in datetime_cols:
+        df[col] = pd.to_datetime(df[col], errors='coerce')
 
     df['trip_duration_minutes'] = (
         df['tpep_dropoff_datetime'] - df['tpep_pickup_datetime']
@@ -120,7 +110,7 @@ def transform(data, *args, **kwargs) -> Dict[str, pd.DataFrame]:
         'dim_rate_code': dim_rate_code
     }  
 
-    dims = {}
+    output = {'facts': df}
     for dim_name, new_dim in new_dims.items():
         if dim_name in ['dim_vendor', 'dim_payment_type', 'dim_rate_code']:
             id_col = new_dim.columns[0]
@@ -128,15 +118,11 @@ def transform(data, *args, **kwargs) -> Dict[str, pd.DataFrame]:
         else:
             id_col = new_dim.columns[0]
             name_col = None
-        dims[dim_name] = merge_dimensions(existing_dims, new_dim, dim_name, id_col, name_col)
+        output[dim_name] = merge_dimensions(existing_dims, new_dim, dim_name, id_col, name_col)
 
-    return {
-        'facts': df,
-        'dimensions': dims
-    }
+    return output
 
 
 @test
 def test_output(output, *args) -> None:
     assert output is not None, 'The output is undefined'
-    assert 'facts' in output and 'dimensions' in output, 'Missing keys in output'

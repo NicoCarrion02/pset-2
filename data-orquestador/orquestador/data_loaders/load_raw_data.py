@@ -25,6 +25,13 @@ def load_data_from_postgres(*args, **kwargs):
 
     year = execution_date.year
     month = execution_date.month
+    hour = execution_date.hour
+    
+    # day_partitions = 4 # usado para 2 backfills en la mañana
+    day_partitions = 6 # usado para 3 backfills en la tarde
+    
+    hours_per_partition = 24 / day_partitions
+    time_partition_index  = hour // hours_per_partition
 
     query_raw = f"""
         SELECT
@@ -32,6 +39,7 @@ def load_data_from_postgres(*args, **kwargs):
         FROM raw.ny_taxi_trips
         WHERE trip_year = {year}
           AND trip_month = {month}
+          AND FLOOR(EXTRACT(HOUR from tpep_pickup_datetime)/{hours_per_partition}) = {time_partition_index};
     """
     config_path = path.join(get_repo_path(), 'io_config.yaml')
     config_profile = 'default'
@@ -47,13 +55,11 @@ def load_data_from_postgres(*args, **kwargs):
     
     return {
         'raw': df_raw,
-        'dimensions': {
-            'dim_vendor': df_vendor,
-            'dim_payment_type': df_payment_type,
-            'dim_rate_code': df_rate_code,
-            'dim_pickup_location': df_pu_location,
-            'dim_dropoff_location': df_do_location,
-        }
+        'dim_vendor': df_vendor,
+        'dim_payment_type': df_payment_type,
+        'dim_rate_code': df_rate_code,
+        'dim_pickup_location': df_pu_location,
+        'dim_dropoff_location': df_do_location
     }
 
 
